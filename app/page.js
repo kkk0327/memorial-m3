@@ -10,7 +10,7 @@ const SCENE_CONFIG = {
     isOutdoor: true, 
     img: '/images/Panorama01.png', 
     hotspots: [
-      { type: 'room', target: 'bong01', text: '봉안당 1', pitch: 12, yaw: -55 },
+      { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 12, yaw: -55 },
       { type: 'room', target: 'res', text: '레스토랑', pitch: 2, yaw: -48 },
       { type: 'room', target: 'office', text: '오피스', pitch: 4, yaw: 32 },
       { type: 'room', target: 'dis', text: '전시관', pitch: 3, yaw: 55 },
@@ -22,7 +22,7 @@ const SCENE_CONFIG = {
     isOutdoor: true, 
     img: '/images/Panorama02.png', 
     hotspots: [
-      { type: 'room', target: 'bong01', text: '봉안당 1', pitch: 10, yaw: -50 },
+      { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -50 },
       { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -45 },
       { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 8, yaw: 12 }, 
       { type: 'room', target: 'office', text: '오피스', pitch: 8, yaw: 100 },
@@ -36,7 +36,7 @@ const SCENE_CONFIG = {
     isOutdoor: true, 
     img: '/images/Panorama03.png', 
     hotspots: [
-      { type: 'room', target: 'bong01', text: '봉안당 1', pitch: 10, yaw: -30 },
+      { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -30 },
       { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -25 },
       { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 10, yaw: 25 },
       { type: 'nav', target: 'Panorama04', color: '#ef4444', pitch: -16, yaw: 0, targetYaw: 0 },
@@ -47,7 +47,7 @@ const SCENE_CONFIG = {
     isOutdoor: true, 
     img: '/images/Panorama04.png', 
     hotspots: [
-      { type: 'room', target: 'bong01', text: '봉안당 1', pitch: 10, yaw: -35 },
+      { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -35 },
       { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 10, yaw: 35 },
       { type: 'room', target: 'bong03', text: '봉안당 3', pitch: 12, yaw: 0 },
       { type: 'nav', target: 'Panorama07', color: '#ef4444', pitch: -10, yaw: 15, targetYaw: 0, rotate: '90deg', w: 60, h: 90 },
@@ -59,7 +59,7 @@ const SCENE_CONFIG = {
     isOutdoor: true, 
     img: '/images/Panorama06.png', 
     hotspots: [
-      { type: 'room', target: 'bong01', text: '봉안당 1', pitch: 10, yaw: -45 },
+      { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -45 },
       { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -40 },
       { type: 'room', target: 'bong03', text: '봉안당 3', pitch: 10, yaw: 35 },
       { type: 'room', target: 'cafe', text: '카페', pitch: 10, yaw: 10 },
@@ -85,6 +85,11 @@ const SCENE_CONFIG = {
       { type: 'nav', target: 'Panorama07', color: '#3b82f6', pitch: -20, yaw: 0, targetYaw: -150, rotate: '180deg' }
     ]
   },
+  // 일반 사진 모드 설정
+  'bong1234': { isFlat: true, img: '/images/bong1234.jpg', title: '봉안당 1 내부' },
+  'yu': { isFlat: true, img: '/images/yu.jpg', title: 'D-4 구역 상세' },
+  
+  // 파노라마 씬들
   'res': { title: '레스토랑', img: '/images/res.jpg', hotspots: [] },
   'office': { title: '오피스', img: '/images/office.jpg', hotspots: [] },
   'dis': { title: '전시관', img: '/images/dis.jpg', hotspots: [] },
@@ -92,18 +97,9 @@ const SCENE_CONFIG = {
   'cafe': { title: '카페', img: '/images/cafe.jpg', hotspots: [] },
   'hotel': { title: '호텔', img: '/images/hotel.jpg', hotspots: [] },
   'pat': { title: '팻시설', img: '/images/pat.jpg', hotspots: [] },
-  'bong01': { title: '봉안당 1', img: '/images/bong01.jpg', hotspots: [] },
   'bong02': { title: '봉안당 2', img: '/images/bong02.jpg', hotspots: [] },
-  'bong03': { 
-    title: '봉안당 3', 
-    img: '/images/bong03.jpg', 
-    hotspots: [
-      { type: 'room', target: 'family', text: '가족추모실', pitch: 5, yaw: -20 }, 
-      { type: 'room', target: 'per', text: '개인추모실', pitch: 5, yaw: 20 }
-    ] 
-  },
-  'family': { title: '가족추모실', img: '/images/family.jpg', hotspots: [] },
-  'per': { title: '개인추모실', img: '/images/per.jpg', hotspots: [] }
+  'bong03': { title: '봉안당 3', img: '/images/bong03.jpg', hotspots: [] },
+  'per': { isOutdoor: false, img: '/images/per.jpg', title: '개인추모실', hotspots: [] }
 };
 
 export default function MemorialApp() {
@@ -129,8 +125,12 @@ export default function MemorialApp() {
   const handleExit = () => {
     if (SCENE_CONFIG[currentScene]?.isOutdoor) {
       setActiveMenu('main');
-    } else if (currentScene === 'family' || currentScene === 'per') {
-      setCurrentScene('bong03');
+    } else if (currentScene === 'bong1234') {
+      setCurrentScene(lastOutdoorScene);
+    } else if (currentScene === 'yu') {
+      setCurrentScene('bong1234');
+    } else if (currentScene === 'per') {
+      setCurrentScene('yu');
     } else {
       setCurrentScene(lastOutdoorScene);
     }
@@ -145,9 +145,9 @@ export default function MemorialApp() {
   };
 
   useEffect(() => {
-    if (activeMenu === 'gallery' && isPannellumLoaded && window.pannellum) {
+    if (activeMenu === 'gallery' && isPannellumLoaded && window.pannellum && !SCENE_CONFIG[currentScene]?.isFlat) {
       if (pannellumInstance.current) { pannellumInstance.current.destroy(); }
-      const data = SCENE_CONFIG[currentScene] || SCENE_CONFIG['Panorama01'];
+      const data = SCENE_CONFIG[currentScene];
       pannellumInstance.current = window.pannellum.viewer(viewerRef.current, {
         type: "equirectangular", panorama: data.img,
         pitch: initView.pitch, yaw: initView.yaw,
@@ -158,13 +158,10 @@ export default function MemorialApp() {
           cssClass: "custom-hotspot",
           createTooltipFunc: (div) => {
             if (hs.type === 'nav') { 
-              const width = hs.w || 55;
-              const height = hs.h || 85;
+              const width = hs.w || 55; const height = hs.h || 85;
               const rotation = hs.rotate || (hs.isReverse ? '180deg' : '0deg');
               div.innerHTML = `<div class="road-arrow-3d" style="width:${width}px; height:${height}px; background-color:${hs.color}; transform: translate(-50%, -50%) rotateX(65deg) rotate(${rotation});"></div>`; 
-            } else { 
-              div.innerHTML = `<div class="room-tag-red">${hs.text}</div>`; 
-            }
+            } else { div.innerHTML = `<div class="room-tag-red">${hs.text}</div>`; }
           },
           clickHandlerFunc: () => handleHotspotClick(hs)
         }))
@@ -177,7 +174,6 @@ export default function MemorialApp() {
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
       <Script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js" strategy="afterInteractive" onLoad={() => setIsPannellumLoaded(true)} />
       
-      {/* 1. 메인 화면 */}
       {activeMenu === 'main' && (
         <div className="main-viewport">
           <img src="/images/main.jpg" className="full-bg" />
@@ -204,62 +200,70 @@ export default function MemorialApp() {
         </div>
       )}
 
-      {/* 2. 영상 재생 화면 */}
       {activeMenu === 'video' && (
         <div className="video-full-viewport">
-          <video 
-            src="/videos/mo01.mp4" 
-            autoPlay 
-            playsInline
-            muted={false} 
-            onEnded={startGallery} 
-            className="full-video-element"
-          />
-          <button className="video-exit-button" onClick={startGallery}>
-            <X size={32} color="white" />
-          </button>
+          <video src="/videos/mo01.mp4" autoPlay playsInline onEnded={startGallery} className="full-video-element" />
+          <button className="video-exit-button" onClick={startGallery}><X size={32} color="white" /></button>
         </div>
       )}
 
-      {/* 3. 파노라마 갤러리 화면 */}
       {activeMenu === 'gallery' && (
         <div className="gallery-full-viewport">
-          <div ref={viewerRef} className="viewer-canvas" />
-          {!SCENE_CONFIG[currentScene]?.isOutdoor && (
-            <div className="scene-title-badge">{SCENE_CONFIG[currentScene]?.title}</div>
+          {SCENE_CONFIG[currentScene]?.isFlat ? (
+            <div className="flat-image-container">
+              <img src={SCENE_CONFIG[currentScene].img} className="flat-image" />
+              {currentScene === 'bong1234' && (
+                <>
+                  <div className="flat-label d1" style={{ top: '45%', left: '25%', transform: 'rotate(-25deg) skew(20deg)' }}>D-1</div>
+                  <div className="flat-label d2" style={{ top: '38%', left: '38%', transform: 'rotate(-15deg) skew(15deg)' }}>D-2</div>
+                  <div className="flat-label d3" style={{ top: '33%', left: '58%', transform: 'rotate(5deg) skew(-10deg)' }}>D-3</div>
+                  <div className="flat-label d4 clickable" 
+                       style={{ top: '65%', left: '60%', transform: 'rotate(15deg) skew(-20deg)', fontSize: '4rem' }}
+                       onClick={() => setCurrentScene('yu')}>
+                    D-4
+                  </div>
+                </>
+              )}
+              {currentScene === 'yu' && (
+                <div className="yu-target-area" onClick={() => setCurrentScene('per')}>
+                  <div className="yu-tooltip">D-4-0001 김민성</div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div ref={viewerRef} className="viewer-canvas" />
           )}
+          <div className="scene-title-badge">{SCENE_CONFIG[currentScene]?.title}</div>
           <button className="exit-button" onClick={handleExit}><X size={32} /></button>
         </div>
       )}
 
-      {showToast && (
-        <div className="toast-center">
-          {toastMessage.map((line, i) => <div key={i}>{line}</div>)}
-        </div>
-      )}
+      {showToast && <div className="toast-center">{toastMessage.map((line, i) => <div key={i}>{line}</div>)}</div>}
 
       <style jsx global>{`
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; font-family: 'Noto Serif KR', serif; }
         .app-container { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
         .main-viewport { position: relative; width: 100%; height: 100%; max-width: 450px; background: #000; }
-        @media screen and (min-width: 1025px) { .main-viewport { border-left: 1px solid #333; border-right: 1px solid #333; } }
         .full-bg { width: 100%; height: 100%; object-fit: cover; }
         .main-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 15vh 0 8vh; background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent, rgba(0,0,0,0.6)); z-index: 20; }
-        .main-header { text-align: center; z-index: 30; }
-        .main-title { font-size: 3.8rem; margin: 0; color: #1a1a1a; font-weight: 700; letter-spacing: -1px; text-shadow: 0 2px 8px rgba(255,255,255,0.7); }
-        .main-subtitle { font-size: 1.1rem; color: #222; margin: -5px 0 0 0; font-weight: 500; letter-spacing: -0.5px; text-shadow: 0 1px 4px rgba(255,255,255,0.8); }
-        .bottom-menu { display: flex; justify-content: space-around; width: 100%; z-index: 30; }
+        .main-title { font-size: 3.8rem; margin: 0; color: #1a1a1a; font-weight: 700; text-shadow: 0 2px 8px rgba(255,255,255,0.7); text-align: center; }
+        .main-subtitle { font-size: 1.1rem; color: #222; margin: -5px 0 0 0; font-weight: 500; text-shadow: 0 1px 4px rgba(255,255,255,0.8); text-align: center; }
+        .bottom-menu { display: flex; justify-content: space-around; width: 100%; }
         .bottom-menu button { background: none; border: none; color: white; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
-        .video-full-viewport { position: fixed; inset: 0; background: #000; z-index: 150; display: flex; align-items: center; justify-content: center; }
+        .video-full-viewport { position: fixed; inset: 0; background: #000; z-index: 150; }
         .full-video-element { width: 100%; height: 100%; object-fit: cover; }
-        .video-exit-button { position: absolute; top: 30px; right: 30px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.5); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 160; }
-        .gallery-full-viewport { position: fixed; inset: 0; z-index: 100; width: 100vw; height: 100vh; }
+        .video-exit-button { position: absolute; top: 30px; right: 30px; background: rgba(0,0,0,0.5); border: 1px solid white; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .gallery-full-viewport { position: fixed; inset: 0; z-index: 100; background: #000; }
         .viewer-canvas { width: 100%; height: 100%; }
-        .scene-title-badge { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); border: 2px solid #ef4444; color: white; padding: 10px 30px; border-radius: 8px; font-weight: bold; font-size: 1.2rem; z-index: 110; }
+        .flat-image-container { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+        .flat-image { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .flat-label { position: absolute; color: red; font-weight: bold; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); pointer-events: none; }
+        .flat-label.clickable { cursor: pointer; pointer-events: auto; }
+        .yu-target-area { position: absolute; top: 15%; left: 10%; width: 12%; height: 15%; cursor: pointer; }
+        .yu-tooltip { position: absolute; top: -30px; left: 0; background: rgba(239, 68, 68, 0.9); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; white-space: nowrap; }
+        .scene-title-badge { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); border: 2px solid #ef4444; color: white; padding: 10px 30px; border-radius: 8px; font-weight: bold; z-index: 110; }
         .exit-button { position: absolute; top: 30px; right: 30px; z-index: 110; background: rgba(0,0,0,0.5); border: 1px solid #fff; border-radius: 50%; width: 50px; height: 50px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .custom-hotspot { z-index: 100; pointer-events: auto; }
-        .road-arrow-3d { clip-path: polygon(50% 0%, 15% 100%, 50% 80%, 85% 100%); cursor: pointer; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.4)); }
-        .room-tag-red { background: rgba(0,0,0,0.8); border: 2.5px solid #ef4444; color: white; padding: 7px 18px; border-radius: 8px; font-weight: bold; transform: translate(-50%, -50%); white-space: nowrap; font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer; }
+        .room-tag-red { background: rgba(0,0,0,0.8); border: 2.5px solid #ef4444; color: white; padding: 7px 18px; border-radius: 8px; font-weight: bold; white-space: nowrap; cursor: pointer; }
         .toast-center { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.85); color: white; padding: 22px 45px; border-radius: 20px; z-index: 500; text-align: center; }
         .flower-anim { position: absolute; left: 50%; bottom: 25%; transform: translateX(-50%); z-index: 20; animation: flower-up 2.6s forwards; }
         @keyframes flower-up { 0% { bottom: 25%; opacity: 0; } 20% { opacity: 1; } 100% { bottom: 60%; opacity: 0; } }
