@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import Script from 'next/script';
 import { Flower2, Landmark, NotebookPen, X } from 'lucide-react';
 
-// === 모든 로직과 사용자 지정 좌표 데이터 완벽 보존 ===
 const SCENE_CONFIG = {
   'Panorama01': { 
     isOutdoor: true, 
@@ -23,11 +22,7 @@ const SCENE_CONFIG = {
     img: '/images/Panorama02.png', 
     hotspots: [
       { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -50 },
-      { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -45 },
       { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 8, yaw: 12 }, 
-      { type: 'room', target: 'office', text: '오피스', pitch: 8, yaw: 100 },
-      { type: 'room', target: 'dis', text: '전시관', pitch: 12, yaw: 120 },
-      { type: 'room', target: 'jip', text: '집회장', pitch: -2, yaw: 110 },
       { type: 'nav', target: 'Panorama03', color: '#ef4444', pitch: -18, yaw: 0, targetYaw: 0 }, 
       { type: 'nav', target: 'Panorama01', color: '#3b82f6', pitch: -25, yaw: 0, targetYaw: 180, isReverse: true } 
     ]
@@ -37,8 +32,6 @@ const SCENE_CONFIG = {
     img: '/images/Panorama03.png', 
     hotspots: [
       { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -30 },
-      { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -25 },
-      { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 10, yaw: 25 },
       { type: 'nav', target: 'Panorama04', color: '#ef4444', pitch: -16, yaw: 0, targetYaw: 0 },
       { type: 'nav', target: 'Panorama02', color: '#3b82f6', pitch: -25, yaw: 0, targetYaw: 180, isReverse: true }
     ]
@@ -48,58 +41,20 @@ const SCENE_CONFIG = {
     img: '/images/Panorama04.png', 
     hotspots: [
       { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -35 },
-      { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 10, yaw: 35 },
       { type: 'room', target: 'bong03', text: '봉안당 3', pitch: 12, yaw: 0 },
       { type: 'nav', target: 'Panorama07', color: '#ef4444', pitch: -10, yaw: 15, targetYaw: 0, rotate: '90deg', w: 60, h: 90 },
-      { type: 'nav', target: 'Panorama06', color: '#10b981', pitch: -10, yaw: -15, targetYaw: 0, rotate: '-90deg', w: 60, h: 90 },
-      { type: 'nav', target: 'Panorama03', color: '#3b82f6', pitch: -15, yaw: 0, targetYaw: 180, rotate: '180deg', w: 60, h: 90 }
+      { type: 'nav', target: 'Panorama06', color: '#10b981', pitch: -10, yaw: -15, targetYaw: 0, rotate: '-90deg', w: 60, h: 90 }
     ]
   },
-  'Panorama06': { 
-    isOutdoor: true, 
-    img: '/images/Panorama06.png', 
-    hotspots: [
-      { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -45 },
-      { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -40 },
-      { type: 'room', target: 'bong03', text: '봉안당 3', pitch: 10, yaw: 35 },
-      { type: 'room', target: 'cafe', text: '카페', pitch: 10, yaw: 10 },
-      { type: 'nav', target: 'Panorama04', color: '#3b82f6', pitch: -20, yaw: 0, targetYaw: 160, rotate: '180deg' }
-    ]
-  },
-  'Panorama07': { 
-    isOutdoor: true, 
-    img: '/images/Panorama07.png', 
-    hotspots: [
-      { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 10, yaw: 45 },
-      { type: 'room', target: 'bong03', text: '봉안당 3', pitch: 10, yaw: -45 },
-      { type: 'nav', target: 'Panorama08', color: '#ef4444', pitch: -16, yaw: 0, targetYaw: 0 },
-      { type: 'nav', target: 'Panorama04', color: '#3b82f6', pitch: -25, yaw: 0, targetYaw: -135, rotate: '180deg' }
-    ]
-  },
-  'Panorama08': { 
-    isOutdoor: true, 
-    img: '/images/Panorama08.png', 
-    hotspots: [
-      { type: 'room', target: 'hotel', text: '호텔', pitch: 10, yaw: -5 },
-      { type: 'room', target: 'pat', text: '팻시설', pitch: 10, yaw: 15 },
-      { type: 'nav', target: 'Panorama07', color: '#3b82f6', pitch: -20, yaw: 0, targetYaw: -150, rotate: '180deg' }
-    ]
-  },
-  // 일반 사진 모드 설정
   'bong1234': { isFlat: true, img: '/images/bong1234.jpg', title: '봉안당 1 내부' },
   'yu': { isFlat: true, img: '/images/yu.jpg', title: 'D-4 구역 상세' },
-  
-  // 파노라마 씬들
+  'per': { isOutdoor: false, img: '/images/per.jpg', title: '개인추모실', hotspots: [] },
   'res': { title: '레스토랑', img: '/images/res.jpg', hotspots: [] },
   'office': { title: '오피스', img: '/images/office.jpg', hotspots: [] },
   'dis': { title: '전시관', img: '/images/dis.jpg', hotspots: [] },
   'jip': { title: '집회장', img: '/images/jip.jpg', hotspots: [] },
-  'cafe': { title: '카페', img: '/images/cafe.jpg', hotspots: [] },
-  'hotel': { title: '호텔', img: '/images/hotel.jpg', hotspots: [] },
-  'pat': { title: '팻시설', img: '/images/pat.jpg', hotspots: [] },
   'bong02': { title: '봉안당 2', img: '/images/bong02.jpg', hotspots: [] },
-  'bong03': { title: '봉안당 3', img: '/images/bong03.jpg', hotspots: [] },
-  'per': { isOutdoor: false, img: '/images/per.jpg', title: '개인추모실', hotspots: [] }
+  'bong03': { title: '봉안당 3', img: '/images/bong03.jpg', hotspots: [] }
 };
 
 export default function MemorialApp() {
@@ -159,8 +114,7 @@ export default function MemorialApp() {
           createTooltipFunc: (div) => {
             if (hs.type === 'nav') { 
               const width = hs.w || 55; const height = hs.h || 85;
-              const rotation = hs.rotate || (hs.isReverse ? '180deg' : '0deg');
-              div.innerHTML = `<div class="road-arrow-3d" style="width:${width}px; height:${height}px; background-color:${hs.color}; transform: translate(-50%, -50%) rotateX(65deg) rotate(${rotation});"></div>`; 
+              div.innerHTML = `<div class="road-arrow-3d" style="width:${width}px; height:${height}px; background-color:${hs.color}; transform: translate(-50%, -50%) rotateX(65deg) rotate(${hs.rotate || '0deg'});"></div>`; 
             } else { div.innerHTML = `<div class="room-tag-red">${hs.text}</div>`; }
           },
           clickHandlerFunc: () => handleHotspotClick(hs)
@@ -213,16 +167,16 @@ export default function MemorialApp() {
             <div className="flat-image-container">
               <img src={SCENE_CONFIG[currentScene].img} className="flat-image" />
               {currentScene === 'bong1234' && (
-                <>
+                <div className="flat-overlay">
                   <div className="flat-label d1" style={{ top: '45%', left: '25%', transform: 'rotate(-25deg) skew(20deg)' }}>D-1</div>
                   <div className="flat-label d2" style={{ top: '38%', left: '38%', transform: 'rotate(-15deg) skew(15deg)' }}>D-2</div>
                   <div className="flat-label d3" style={{ top: '33%', left: '58%', transform: 'rotate(5deg) skew(-10deg)' }}>D-3</div>
                   <div className="flat-label d4 clickable" 
-                       style={{ top: '65%', left: '60%', transform: 'rotate(15deg) skew(-20deg)', fontSize: '4rem' }}
+                       style={{ top: '65%', left: '60%', transform: 'rotate(15deg) skew(-20deg)', fontSize: '4rem', pointerEvents: 'auto' }}
                        onClick={() => setCurrentScene('yu')}>
                     D-4
                   </div>
-                </>
+                </div>
               )}
               {currentScene === 'yu' && (
                 <div className="yu-target-area" onClick={() => setCurrentScene('per')}>
@@ -257,8 +211,9 @@ export default function MemorialApp() {
         .viewer-canvas { width: 100%; height: 100%; }
         .flat-image-container { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
         .flat-image { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .flat-label { position: absolute; color: red; font-weight: bold; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); pointer-events: none; }
-        .flat-label.clickable { cursor: pointer; pointer-events: auto; }
+        .flat-overlay { position: absolute; inset: 0; pointer-events: none; }
+        .flat-label { position: absolute; color: red; font-weight: bold; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .flat-label.clickable { cursor: pointer; }
         .yu-target-area { position: absolute; top: 15%; left: 10%; width: 12%; height: 15%; cursor: pointer; }
         .yu-tooltip { position: absolute; top: -30px; left: 0; background: rgba(239, 68, 68, 0.9); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; white-space: nowrap; }
         .scene-title-badge { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); border: 2px solid #ef4444; color: white; padding: 10px 30px; border-radius: 8px; font-weight: bold; z-index: 110; }
