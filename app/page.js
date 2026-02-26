@@ -43,11 +43,23 @@ const SCENE_CONFIG = {
       { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -35 },
       { type: 'room', target: 'bong03', text: '봉안당 3', pitch: 12, yaw: 0 },
       { type: 'nav', target: 'Panorama07', color: '#ef4444', pitch: -10, yaw: 15, targetYaw: 0, rotate: '90deg', w: 60, h: 90 },
-      { type: 'nav', target: 'Panorama06', color: '#10b981', pitch: -10, yaw: -15, targetYaw: 0, rotate: '-90deg', w: 60, h: 90 }
+      { type: 'nav', target: 'Panorama06', color: '#10b981', pitch: -10, yaw: -15, targetYaw: 0, rotate: '-90deg', w: 60, h: 90 },
+      { type: 'nav', target: 'Panorama03', color: '#3b82f6', pitch: -15, yaw: 0, targetYaw: 180, rotate: '180deg', w: 60, h: 90 }
     ]
   },
+  'Panorama06': { 
+    isOutdoor: true, 
+    img: '/images/Panorama06.png', 
+    hotspots: [
+      { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -45 },
+      { type: 'room', target: 'bong03', text: '봉안당 3', pitch: 10, yaw: 35 },
+      { type: 'nav', target: 'Panorama04', color: '#3b82f6', pitch: -20, yaw: 0, targetYaw: 160, rotate: '180deg' }
+    ]
+  },
+  // 일반 사진 씬
   'bong1234': { isFlat: true, img: '/images/bong1234.jpg', title: '봉안당 1 내부' },
   'yu': { isFlat: true, img: '/images/yu.jpg', title: 'D-4 구역 상세' },
+  // 파노라마 씬
   'per': { isOutdoor: false, img: '/images/per.jpg', title: '개인추모실', hotspots: [] },
   'res': { title: '레스토랑', img: '/images/res.jpg', hotspots: [] },
   'office': { title: '오피스', img: '/images/office.jpg', hotspots: [] },
@@ -167,12 +179,12 @@ export default function MemorialApp() {
             <div className="flat-image-container">
               <img src={SCENE_CONFIG[currentScene].img} className="flat-image" />
               {currentScene === 'bong1234' && (
-                <div className="flat-overlay">
+                <div className="flat-interaction-layer">
                   <div className="flat-label d1" style={{ top: '45%', left: '25%', transform: 'rotate(-25deg) skew(20deg)' }}>D-1</div>
                   <div className="flat-label d2" style={{ top: '38%', left: '38%', transform: 'rotate(-15deg) skew(15deg)' }}>D-2</div>
                   <div className="flat-label d3" style={{ top: '33%', left: '58%', transform: 'rotate(5deg) skew(-10deg)' }}>D-3</div>
                   <div className="flat-label d4 clickable" 
-                       style={{ top: '65%', left: '60%', transform: 'rotate(15deg) skew(-20deg)', fontSize: '4rem', pointerEvents: 'auto' }}
+                       style={{ top: '65%', left: '60%', transform: 'rotate(15deg) skew(-20deg)', fontSize: '4rem' }}
                        onClick={() => setCurrentScene('yu')}>
                     D-4
                   </div>
@@ -209,12 +221,12 @@ export default function MemorialApp() {
         .video-exit-button { position: absolute; top: 30px; right: 30px; background: rgba(0,0,0,0.5); border: 1px solid white; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .gallery-full-viewport { position: fixed; inset: 0; z-index: 100; background: #000; }
         .viewer-canvas { width: 100%; height: 100%; }
-        .flat-image-container { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+        .flat-image-container { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 105; }
         .flat-image { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .flat-overlay { position: absolute; inset: 0; pointer-events: none; }
+        .flat-interaction-layer { position: absolute; inset: 0; pointer-events: none; width: 100%; height: 100%; }
         .flat-label { position: absolute; color: red; font-weight: bold; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .flat-label.clickable { cursor: pointer; }
-        .yu-target-area { position: absolute; top: 15%; left: 10%; width: 12%; height: 15%; cursor: pointer; }
+        .flat-label.clickable { cursor: pointer; pointer-events: auto; }
+        .yu-target-area { position: absolute; top: 15%; left: 10%; width: 12%; height: 15%; cursor: pointer; z-index: 120; }
         .yu-tooltip { position: absolute; top: -30px; left: 0; background: rgba(239, 68, 68, 0.9); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; white-space: nowrap; }
         .scene-title-badge { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); border: 2px solid #ef4444; color: white; padding: 10px 30px; border-radius: 8px; font-weight: bold; z-index: 110; }
         .exit-button { position: absolute; top: 30px; right: 30px; z-index: 110; background: rgba(0,0,0,0.5); border: 1px solid #fff; border-radius: 50%; width: 50px; height: 50px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
