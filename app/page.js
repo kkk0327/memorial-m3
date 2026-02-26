@@ -22,14 +22,14 @@ const SCENE_CONFIG = {
     img: '/images/Panorama02.png', 
     hotspots: [
       { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -50 },
-      { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -45 }, // 복구됨
+      { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -45 }, 
       { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 8, yaw: 12 }, 
-      { type: 'room', target: 'office', text: '오피스', pitch: 8, yaw: 100 }, // 복구됨
-      { type: 'room', target: 'dis', text: '전시관', pitch: 12, yaw: 120 },   // 복구됨
-      { type: 'room', target: 'jip', text: '집회장', pitch: -2, yaw: 110 },   // 복구됨
+      { type: 'room', target: 'office', text: '오피스', pitch: 8, yaw: 100 }, 
+      { type: 'room', target: 'dis', text: '전시관', pitch: 12, yaw: 120 },   
+      { type: 'room', target: 'jip', text: '집회장', pitch: -2, yaw: 110 },   
       { type: 'nav', target: 'Panorama03', color: '#ef4444', pitch: -18, yaw: 0, targetYaw: 0 }, 
-      // 길거리 1로 돌아갈 때 targetYaw를 -26으로 설정하여 시작 뷰와 맞춤
-      { type: 'nav', target: 'Panorama01', color: '#3b82f6', pitch: -25, yaw: 0, targetYaw: -26, isReverse: true } 
+      // [수정] 화살표 뒤집기(rotate: 180deg) 추가
+      { type: 'nav', target: 'Panorama01', color: '#3b82f6', pitch: -25, yaw: 0, targetYaw: -26, rotate: '180deg' } 
     ]
   },
   'Panorama03': { 
@@ -37,10 +37,11 @@ const SCENE_CONFIG = {
     img: '/images/Panorama03.png', 
     hotspots: [
       { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -30 },
-      { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -25 }, // 복구됨
-      { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 10, yaw: 25 }, // 복구됨
+      { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -25 }, 
+      { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 10, yaw: 25 }, 
       { type: 'nav', target: 'Panorama04', color: '#ef4444', pitch: -16, yaw: 0, targetYaw: 0 },
-      { type: 'nav', target: 'Panorama02', color: '#3b82f6', pitch: -25, yaw: 0, targetYaw: 180, isReverse: true }
+      // [수정] 화살표 뒤집기(rotate: 180deg) 추가 및 도착 시선 정면(targetYaw: 0)으로 변경
+      { type: 'nav', target: 'Panorama02', color: '#3b82f6', pitch: -25, yaw: 0, targetYaw: 0, rotate: '180deg' }
     ]
   },
   'Panorama04': { 
@@ -48,11 +49,12 @@ const SCENE_CONFIG = {
     img: '/images/Panorama04.png', 
     hotspots: [
       { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -35 },
-      { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 10, yaw: 35 }, // 복구됨
+      { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 10, yaw: 35 }, 
       { type: 'room', target: 'bong03', text: '봉안당 3', pitch: 12, yaw: 0 },
       { type: 'nav', target: 'Panorama07', color: '#ef4444', pitch: -10, yaw: 15, targetYaw: 0, rotate: '90deg', w: 60, h: 90 },
       { type: 'nav', target: 'Panorama06', color: '#10b981', pitch: -10, yaw: -15, targetYaw: 0, rotate: '-90deg', w: 60, h: 90 },
-      { type: 'nav', target: 'Panorama03', color: '#3b82f6', pitch: -15, yaw: 0, targetYaw: 180, rotate: '180deg', w: 60, h: 90 }
+      // [수정] 도착 시선 정면(targetYaw: 0)으로 변경
+      { type: 'nav', target: 'Panorama03', color: '#3b82f6', pitch: -15, yaw: 0, targetYaw: 0, rotate: '180deg', w: 60, h: 90 }
     ]
   },
   'Panorama06': { 
@@ -60,13 +62,12 @@ const SCENE_CONFIG = {
     img: '/images/Panorama06.png', 
     hotspots: [
       { type: 'room', target: 'bong1234', text: '봉안당 1', pitch: 10, yaw: -45 },
-      { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -40 }, // 복구됨
+      { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -40 }, 
       { type: 'room', target: 'bong03', text: '봉안당 3', pitch: 10, yaw: 35 },
-      { type: 'room', target: 'cafe', text: '카페', pitch: 10, yaw: 10 }, // 복구됨
+      { type: 'room', target: 'cafe', text: '카페', pitch: 10, yaw: 10 }, 
       { type: 'nav', target: 'Panorama04', color: '#3b82f6', pitch: -20, yaw: 0, targetYaw: 160, rotate: '180deg' }
     ]
   },
-  // 누락되었던 파노라마 7, 8 복구
   'Panorama07': { 
     isOutdoor: true, 
     img: '/images/Panorama07.png', 
@@ -93,9 +94,9 @@ const SCENE_CONFIG = {
   'office': { title: '오피스', img: '/images/office.jpg', hotspots: [] },
   'dis': { title: '전시관', img: '/images/dis.jpg', hotspots: [] },
   'jip': { title: '집회장', img: '/images/jip.jpg', hotspots: [] },
-  'cafe': { title: '카페', img: '/images/cafe.jpg', hotspots: [] }, // 복구
-  'hotel': { title: '호텔', img: '/images/hotel.jpg', hotspots: [] }, // 복구
-  'pat': { title: '팻시설', img: '/images/pat.jpg', hotspots: [] }, // 복구
+  'cafe': { title: '카페', img: '/images/cafe.jpg', hotspots: [] }, 
+  'hotel': { title: '호텔', img: '/images/hotel.jpg', hotspots: [] }, 
+  'pat': { title: '팻시설', img: '/images/pat.jpg', hotspots: [] }, 
   'bong02': { title: '봉안당 2', img: '/images/bong02.jpg', hotspots: [] },
   'bong03': { title: '봉안당 3', img: '/images/bong03.jpg', hotspots: [] }
 };
