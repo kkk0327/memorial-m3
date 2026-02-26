@@ -28,7 +28,6 @@ const SCENE_CONFIG = {
       { type: 'room', target: 'dis', text: '전시관', pitch: 12, yaw: 120 },   
       { type: 'room', target: 'jip', text: '집회장', pitch: -2, yaw: 110 },   
       { type: 'nav', target: 'Panorama03', color: '#ef4444', pitch: -18, yaw: 0, targetYaw: 0 }, 
-      // [수정] 화살표 뒤집기(rotate: 180deg) 추가
       { type: 'nav', target: 'Panorama01', color: '#3b82f6', pitch: -25, yaw: 0, targetYaw: -26, rotate: '180deg' } 
     ]
   },
@@ -40,7 +39,6 @@ const SCENE_CONFIG = {
       { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -25 }, 
       { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 10, yaw: 25 }, 
       { type: 'nav', target: 'Panorama04', color: '#ef4444', pitch: -16, yaw: 0, targetYaw: 0 },
-      // [수정] 화살표 뒤집기(rotate: 180deg) 추가 및 도착 시선 정면(targetYaw: 0)으로 변경
       { type: 'nav', target: 'Panorama02', color: '#3b82f6', pitch: -25, yaw: 0, targetYaw: 0, rotate: '180deg' }
     ]
   },
@@ -53,7 +51,6 @@ const SCENE_CONFIG = {
       { type: 'room', target: 'bong03', text: '봉안당 3', pitch: 12, yaw: 0 },
       { type: 'nav', target: 'Panorama07', color: '#ef4444', pitch: -10, yaw: 15, targetYaw: 0, rotate: '90deg', w: 60, h: 90 },
       { type: 'nav', target: 'Panorama06', color: '#10b981', pitch: -10, yaw: -15, targetYaw: 0, rotate: '-90deg', w: 60, h: 90 },
-      // [수정] 도착 시선 정면(targetYaw: 0)으로 변경
       { type: 'nav', target: 'Panorama03', color: '#3b82f6', pitch: -15, yaw: 0, targetYaw: 0, rotate: '180deg', w: 60, h: 90 }
     ]
   },
@@ -65,7 +62,8 @@ const SCENE_CONFIG = {
       { type: 'room', target: 'res', text: '레스토랑', pitch: 0, yaw: -40 }, 
       { type: 'room', target: 'bong03', text: '봉안당 3', pitch: 10, yaw: 35 },
       { type: 'room', target: 'cafe', text: '카페', pitch: 10, yaw: 10 }, 
-      { type: 'nav', target: 'Panorama04', color: '#3b82f6', pitch: -20, yaw: 0, targetYaw: 160, rotate: '180deg' }
+      // [수정] 길거리 4로 돌아갈 때 정면(0)을 보도록 변경
+      { type: 'nav', target: 'Panorama04', color: '#3b82f6', pitch: -20, yaw: 0, targetYaw: 0, rotate: '180deg' }
     ]
   },
   'Panorama07': { 
@@ -75,7 +73,8 @@ const SCENE_CONFIG = {
       { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 10, yaw: 45 },
       { type: 'room', target: 'bong03', text: '봉안당 3', pitch: 10, yaw: -45 },
       { type: 'nav', target: 'Panorama08', color: '#ef4444', pitch: -16, yaw: 0, targetYaw: 0 },
-      { type: 'nav', target: 'Panorama04', color: '#3b82f6', pitch: -25, yaw: 0, targetYaw: -135, rotate: '180deg' }
+      // [수정] 길거리 4로 돌아갈 때 정면(0)을 보도록 변경
+      { type: 'nav', target: 'Panorama04', color: '#3b82f6', pitch: -25, yaw: 0, targetYaw: 0, rotate: '180deg' }
     ]
   },
   'Panorama08': { 
@@ -84,7 +83,8 @@ const SCENE_CONFIG = {
     hotspots: [
       { type: 'room', target: 'hotel', text: '호텔', pitch: 10, yaw: -5 },
       { type: 'room', target: 'pat', text: '팻시설', pitch: 10, yaw: 15 },
-      { type: 'nav', target: 'Panorama07', color: '#3b82f6', pitch: -20, yaw: 0, targetYaw: -150, rotate: '180deg' }
+      // [수정] 길거리 7로 돌아갈 때 정면(0)을 보도록 변경
+      { type: 'nav', target: 'Panorama07', color: '#3b82f6', pitch: -20, yaw: 0, targetYaw: 0, rotate: '180deg' }
     ]
   },
   'bong1234': { isFlat: true, img: '/images/bong1234.jpg', title: '봉안당 1 내부' },
