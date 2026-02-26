@@ -77,6 +77,9 @@ export default function MemorialApp() {
   const [isFlowering, setIsFlowering] = useState(false);
   const [toastMessage, setToastMessage] = useState([]);
   const [showToast, setShowToast] = useState(false);
+  
+  // 이미지 로딩 실패 감지 상태
+  const [imgError, setImgError] = useState(false);
 
   const viewerRef = useRef(null);
   const pannellumInstance = useRef(null);
@@ -109,8 +112,13 @@ export default function MemorialApp() {
     setCurrentScene(hs.target);
   };
 
+  // 씬이 바뀔 때마다 이미지 에러 상태 초기화
   useEffect(() => {
-    // 파노라마 인스턴스 확실히 제거
+    setImgError(false);
+  }, [currentScene]);
+
+  // 파노라마 인스턴스 관리
+  useEffect(() => {
     if (pannellumInstance.current) {
       try {
         pannellumInstance.current.destroy();
@@ -123,7 +131,6 @@ export default function MemorialApp() {
     if (activeMenu === 'gallery' && isPannellumLoaded && window.pannellum) {
       const data = SCENE_CONFIG[currentScene];
       
-      // 파노라마 모드일 때만 실행 (일반 사진일 때는 아예 구동 안 함)
       if (!data?.isFlat && viewerRef.current) {
         pannellumInstance.current = window.pannellum.viewer(viewerRef.current, {
           type: "equirectangular", panorama: data.img,
@@ -187,34 +194,47 @@ export default function MemorialApp() {
       {activeMenu === 'gallery' && (
         <div className="gallery-full-viewport">
           
-          {/* 1. 일반 사진 모드 (key를 부여하여 파노라마와 완벽 분리) */}
+          {/* 일반 사진 모드 (완전 독립된 컨테이너) */}
           {SCENE_CONFIG[currentScene]?.isFlat && (
-            <div key="flat-view" className="flat-image-container">
-              <img src={SCENE_CONFIG[currentScene].img} className="flat-image" />
+            <div className="flat-scene-wrapper">
+              <img 
+                src={SCENE_CONFIG[currentScene].img} 
+                className="flat-scene-img" 
+                alt="평면 사진" 
+                onError={() => setImgError(true)}
+              />
               
-              {currentScene === 'bong1234' && (
-                <div className="flat-interaction-layer">
-                  <div className="flat-label d1" style={{ top: '45%', left: '25%', transform: 'rotate(-25deg) skew(20deg)' }}>D-1</div>
-                  <div className="flat-label d2" style={{ top: '38%', left: '38%', transform: 'rotate(-15deg) skew(15deg)' }}>D-2</div>
-                  <div className="flat-label d3" style={{ top: '33%', left: '58%', transform: 'rotate(5deg) skew(-10deg)' }}>D-3</div>
-                  <div className="flat-label d4 clickable" 
-                       style={{ top: '65%', left: '60%', transform: 'rotate(15deg) skew(-20deg)', fontSize: '4rem' }}
-                       onClick={() => setCurrentScene('yu')}>
-                    D-4
-                  </div>
+              {/* 이미지 로딩 실패 시 에러 메시지 표시 */}
+              {imgError && (
+                <div className="img-error-msg">
+                  <strong>이미지 로드 실패</strong><br/>
+                  경로에 파일이 없거나 대소문자가 틀립니다:<br/>
+                  <span style={{color: 'yellow'}}>{SCENE_CONFIG[currentScene].img}</span>
                 </div>
               )}
-              {currentScene === 'yu' && (
-                <div className="yu-target-area" onClick={() => setCurrentScene('per')}>
-                  <div className="yu-tooltip">D-4-0001 김민성</div>
+
+              {/* D-1 ~ D-4 라벨 (에러가 없을 때만 표시) */}
+              {currentScene === 'bong1234' && !imgError && (
+                <div className="flat-labels-container">
+                  <div className="d-label d1">D-1</div>
+                  <div className="d-label d2">D-2</div>
+                  <div className="d-label d3">D-3</div>
+                  <div className="d-label d4" onClick={() => setCurrentScene('yu')}>D-4</div>
+                </div>
+              )}
+
+              {/* yu.jpg 유골함 클릭 영역 */}
+              {currentScene === 'yu' && !imgError && (
+                <div className="yu-clickbox" onClick={() => setCurrentScene('per')}>
+                  <span className="yu-tooltip">D-4-0001 김민성</span>
                 </div>
               )}
             </div>
           )}
 
-          {/* 2. 파노라마 모드 (key를 부여하여 완벽 분리) */}
+          {/* 파노라마 모드 */}
           {!SCENE_CONFIG[currentScene]?.isFlat && (
-            <div key="pano-view" ref={viewerRef} className="viewer-canvas" />
+            <div ref={viewerRef} className="viewer-canvas" />
           )}
 
           <div className="scene-title-badge">{SCENE_CONFIG[currentScene]?.title}</div>
@@ -238,24 +258,34 @@ export default function MemorialApp() {
         .full-video-element { width: 100%; height: 100%; object-fit: cover; }
         .video-exit-button { position: absolute; top: 30px; right: 30px; background: rgba(0,0,0,0.5); border: 1px solid white; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .gallery-full-viewport { position: fixed; inset: 0; z-index: 100; background: #000; }
-        .viewer-canvas { width: 100%; height: 100%; }
+        .viewer-canvas { width: 100%; height: 100%; background: #000; }
         
-        /* 겹침 완벽 방지를 위한 배경 검정 처리 강화 */
-        .flat-image-container { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 105; background: #000; }
-        .flat-image { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .flat-interaction-layer { position: absolute; inset: 0; pointer-events: none; width: 100%; height: 100%; }
-        .flat-label { position: absolute; color: red; font-weight: bold; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .flat-label.clickable { cursor: pointer; pointer-events: auto; }
+        /* 1. 평면 사진 레이아웃 강제 고정 (절대 찌그러지지 않음) */
+        .flat-scene-wrapper { position: absolute; inset: 0; width: 100vw; height: 100vh; background: #111; z-index: 105; display: block; }
+        .flat-scene-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 106; }
         
-        .yu-target-area { position: absolute; top: 15%; left: 10%; width: 12%; height: 15%; cursor: pointer; z-index: 120; }
-        .yu-tooltip { position: absolute; top: -30px; left: 0; background: rgba(239, 68, 68, 0.9); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; white-space: nowrap; }
-        .scene-title-badge { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); border: 2px solid #ef4444; color: white; padding: 10px 30px; border-radius: 8px; font-weight: bold; z-index: 110; }
-        .exit-button { position: absolute; top: 30px; right: 30px; z-index: 110; background: rgba(0,0,0,0.5); border: 1px solid #fff; border-radius: 50%; width: 50px; height: 50px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        /* 2. 에러 발생 시 자가 진단 메시지 */
+        .img-error-msg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: #ff5555; border: 2px solid #ff5555; padding: 25px; border-radius: 12px; font-size: 1.2rem; text-align: center; z-index: 120; line-height: 1.6; }
         
-        /* 네모 상자로 깨지던 화살표 디자인 복구 */
+        /* 3. 라벨 영역 분리 및 시인성 극대화 */
+        .flat-labels-container { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 115; pointer-events: none; }
+        .d-label { position: absolute; color: #ef4444; font-weight: 900; text-shadow: 2px 2px 0px #fff, -2px -2px 0px #fff, 2px -2px 0px #fff, -2px 2px 0px #fff; pointer-events: none; }
+        .d1 { top: 45%; left: 25%; font-size: 3rem; transform: rotate(-25deg) skew(20deg); }
+        .d2 { top: 38%; left: 38%; font-size: 3rem; transform: rotate(-15deg) skew(15deg); }
+        .d3 { top: 33%; left: 58%; font-size: 3rem; transform: rotate(5deg) skew(-10deg); }
+        .d4 { top: 60%; left: 65%; font-size: 4.5rem; transform: rotate(15deg) skew(-20deg); pointer-events: auto; cursor: pointer; transition: transform 0.2s; }
+        .d4:hover { transform: rotate(15deg) skew(-20deg) scale(1.1); color: #dc2626; }
+        
+        /* 4. yu.jpg 내 유골함 클릭 영역 */
+        .yu-clickbox { position: absolute; top: 15%; left: 10%; width: 12%; height: 15%; cursor: pointer; z-index: 115; pointer-events: auto; border: 2px dashed rgba(255,255,255,0.3); transition: border 0.3s; }
+        .yu-clickbox:hover { border: 2px dashed rgba(255,255,255,0.9); }
+        .yu-tooltip { position: absolute; top: -35px; left: 0; background: #ef4444; color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.9rem; white-space: nowrap; font-weight: bold; }
+        
+        /* 공통 UI */
+        .scene-title-badge { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); border: 2px solid #ef4444; color: white; padding: 10px 30px; border-radius: 8px; font-weight: bold; z-index: 130; }
+        .exit-button { position: absolute; top: 30px; right: 30px; z-index: 130; background: rgba(0,0,0,0.5); border: 1px solid #fff; border-radius: 50%; width: 50px; height: 50px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .room-tag-red { background: rgba(0,0,0,0.8); border: 2.5px solid #ef4444; color: white; padding: 7px 18px; border-radius: 8px; font-weight: bold; white-space: nowrap; cursor: pointer; }
         .road-arrow-3d { clip-path: polygon(50% 0%, 15% 100%, 50% 80%, 85% 100%); cursor: pointer; }
-        
         .toast-center { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.85); color: white; padding: 22px 45px; border-radius: 20px; z-index: 500; text-align: center; }
         .flower-anim { position: absolute; left: 50%; bottom: 25%; transform: translateX(-50%); z-index: 20; animation: flower-up 2.6s forwards; }
         @keyframes flower-up { 0% { bottom: 25%; opacity: 0; } 20% { opacity: 1; } 100% { bottom: 60%; opacity: 0; } }
