@@ -69,9 +69,7 @@ const SCENE_CONFIG = {
     isOutdoor: true, 
     img: '/images/Panorama07.png', 
     hotspots: [
-      // [수정] 봉안당 2를 왼쪽(음수)으로, 높이를 건물 위치(pitch 2)로 낮춤
       { type: 'room', target: 'bong02', text: '봉안당 2', pitch: 2, yaw: -45 },
-      // [수정] 봉안당 3을 오른쪽(양수)으로, 높이를 건물 위치(pitch 2)로 낮춤
       { type: 'room', target: 'bong03', text: '봉안당 3', pitch: 2, yaw: 45 },
       { type: 'nav', target: 'Panorama08', color: '#ef4444', pitch: -16, yaw: 0, targetYaw: 0 },
       { type: 'nav', target: 'Panorama04', color: '#3b82f6', pitch: -25, yaw: 0, targetYaw: 0, rotate: '180deg' }
@@ -87,7 +85,8 @@ const SCENE_CONFIG = {
     ]
   },
   'bong1234': { isFlat: true, img: '/images/bong1234.jpg', title: '봉안당 1 내부' },
-  'yu': { isFlat: true, img: '/images/yu.jpg', title: 'D-4 구역 상세' },
+  // [수정] 텍스트 변경: 'D-4 구역 상세' -> 'D-4 유골함'
+  'yu': { isFlat: true, img: '/images/yu.jpg', title: 'D-4 유골함' },
   'per': { isOutdoor: false, img: '/images/per.jpg', title: '개인추모실', hotspots: [] },
   'res': { title: '레스토랑', img: '/images/res.jpg', hotspots: [] },
   'office': { title: '오피스', img: '/images/office.jpg', hotspots: [] },
@@ -345,8 +344,12 @@ export default function MemorialApp() {
           background: transparent; 
         }
         
-        .scene-title-badge { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); border: 2px solid #ef4444; color: white; padding: 10px 30px; border-radius: 8px; font-weight: bold; z-index: 130; }
-        .exit-button { position: absolute; top: 30px; right: 30px; z-index: 130; background: rgba(0,0,0,0.5); border: 1px solid #fff; border-radius: 50%; width: 50px; height: 50px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        /* [수정] top: 30px -> top: 10px 로 변경하여 화면 맨 위로 바짝 올림 */
+        .scene-title-badge { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); border: 2px solid #ef4444; color: white; padding: 10px 30px; border-radius: 8px; font-weight: bold; z-index: 130; }
+        
+        /* [수정] 닫기 버튼도 균형을 맞추기 위해 top: 10px 로 동일하게 상향 조정 */
+        .exit-button { position: absolute; top: 10px; right: 30px; z-index: 130; background: rgba(0,0,0,0.5); border: 1px solid #fff; border-radius: 50%; width: 50px; height: 50px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        
         .room-tag-red { background: rgba(0,0,0,0.8); border: 2.5px solid #ef4444; color: white; padding: 7px 18px; border-radius: 8px; font-weight: bold; white-space: nowrap; cursor: pointer; }
         .road-arrow-3d { clip-path: polygon(50% 0%, 15% 100%, 50% 80%, 85% 100%); cursor: pointer; }
         .toast-center { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.85); color: white; padding: 22px 45px; border-radius: 20px; z-index: 500; text-align: center; }
