@@ -56,10 +56,8 @@ const SCENE_CONFIG = {
       { type: 'nav', target: 'Panorama04', color: '#3b82f6', pitch: -20, yaw: 0, targetYaw: 160, rotate: '180deg' }
     ]
   },
-  // 일반 사진 씬
   'bong1234': { isFlat: true, img: '/images/bong1234.jpg', title: '봉안당 1 내부' },
   'yu': { isFlat: true, img: '/images/yu.jpg', title: 'D-4 구역 상세' },
-  // 파노라마 씬
   'per': { isOutdoor: false, img: '/images/per.jpg', title: '개인추모실', hotspots: [] },
   'res': { title: '레스토랑', img: '/images/res.jpg', hotspots: [] },
   'office': { title: '오피스', img: '/images/office.jpg', hotspots: [] },
@@ -112,15 +110,21 @@ export default function MemorialApp() {
   };
 
   useEffect(() => {
-    // 씬 전환 시 기존 뷰어 파괴
+    // 파노라마 인스턴스 확실히 제거
     if (pannellumInstance.current) {
-      pannellumInstance.current.destroy();
+      try {
+        pannellumInstance.current.destroy();
+      } catch (e) {
+        console.error("Pannellum destroy error:", e);
+      }
       pannellumInstance.current = null;
     }
 
     if (activeMenu === 'gallery' && isPannellumLoaded && window.pannellum) {
       const data = SCENE_CONFIG[currentScene];
-      if (!data?.isFlat) {
+      
+      // 파노라마 모드일 때만 실행 (일반 사진일 때는 아예 구동 안 함)
+      if (!data?.isFlat && viewerRef.current) {
         pannellumInstance.current = window.pannellum.viewer(viewerRef.current, {
           type: "equirectangular", panorama: data.img,
           pitch: initView.pitch, yaw: initView.yaw,
@@ -182,9 +186,12 @@ export default function MemorialApp() {
 
       {activeMenu === 'gallery' && (
         <div className="gallery-full-viewport">
-          {SCENE_CONFIG[currentScene]?.isFlat ? (
-            <div className="flat-image-container">
+          
+          {/* 1. 일반 사진 모드 (key를 부여하여 파노라마와 완벽 분리) */}
+          {SCENE_CONFIG[currentScene]?.isFlat && (
+            <div key="flat-view" className="flat-image-container">
               <img src={SCENE_CONFIG[currentScene].img} className="flat-image" />
+              
               {currentScene === 'bong1234' && (
                 <div className="flat-interaction-layer">
                   <div className="flat-label d1" style={{ top: '45%', left: '25%', transform: 'rotate(-25deg) skew(20deg)' }}>D-1</div>
@@ -203,9 +210,13 @@ export default function MemorialApp() {
                 </div>
               )}
             </div>
-          ) : (
-            <div ref={viewerRef} className="viewer-canvas" />
           )}
+
+          {/* 2. 파노라마 모드 (key를 부여하여 완벽 분리) */}
+          {!SCENE_CONFIG[currentScene]?.isFlat && (
+            <div key="pano-view" ref={viewerRef} className="viewer-canvas" />
+          )}
+
           <div className="scene-title-badge">{SCENE_CONFIG[currentScene]?.title}</div>
           <button className="exit-button" onClick={handleExit}><X size={32} /></button>
         </div>
@@ -228,16 +239,23 @@ export default function MemorialApp() {
         .video-exit-button { position: absolute; top: 30px; right: 30px; background: rgba(0,0,0,0.5); border: 1px solid white; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .gallery-full-viewport { position: fixed; inset: 0; z-index: 100; background: #000; }
         .viewer-canvas { width: 100%; height: 100%; }
-        .flat-image-container { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 105; }
+        
+        /* 겹침 완벽 방지를 위한 배경 검정 처리 강화 */
+        .flat-image-container { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 105; background: #000; }
         .flat-image { max-width: 100%; max-height: 100%; object-fit: contain; }
         .flat-interaction-layer { position: absolute; inset: 0; pointer-events: none; width: 100%; height: 100%; }
         .flat-label { position: absolute; color: red; font-weight: bold; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         .flat-label.clickable { cursor: pointer; pointer-events: auto; }
+        
         .yu-target-area { position: absolute; top: 15%; left: 10%; width: 12%; height: 15%; cursor: pointer; z-index: 120; }
         .yu-tooltip { position: absolute; top: -30px; left: 0; background: rgba(239, 68, 68, 0.9); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; white-space: nowrap; }
         .scene-title-badge { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); border: 2px solid #ef4444; color: white; padding: 10px 30px; border-radius: 8px; font-weight: bold; z-index: 110; }
         .exit-button { position: absolute; top: 30px; right: 30px; z-index: 110; background: rgba(0,0,0,0.5); border: 1px solid #fff; border-radius: 50%; width: 50px; height: 50px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        
+        /* 네모 상자로 깨지던 화살표 디자인 복구 */
         .room-tag-red { background: rgba(0,0,0,0.8); border: 2.5px solid #ef4444; color: white; padding: 7px 18px; border-radius: 8px; font-weight: bold; white-space: nowrap; cursor: pointer; }
+        .road-arrow-3d { clip-path: polygon(50% 0%, 15% 100%, 50% 80%, 85% 100%); cursor: pointer; }
+        
         .toast-center { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.85); color: white; padding: 22px 45px; border-radius: 20px; z-index: 500; text-align: center; }
         .flower-anim { position: absolute; left: 50%; bottom: 25%; transform: translateX(-50%); z-index: 20; animation: flower-up 2.6s forwards; }
         @keyframes flower-up { 0% { bottom: 25%; opacity: 0; } 20% { opacity: 1; } 100% { bottom: 60%; opacity: 0; } }
