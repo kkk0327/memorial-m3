@@ -208,13 +208,28 @@ export default function MemorialApp() {
                 </div>
               )}
 
-              {/* D-1 ~ D-4 라벨 (참고 사진에 맞춰 정렬) */}
+              {/* A-1 ~ D-4 표(Grid) 형태 정렬 */}
               {currentScene === 'bong1234' && !imgError && (
-                <div className="flat-labels-container">
-                  <div className="d-label d1">D-1</div>
-                  <div className="d-label d2">D-2</div>
-                  <div className="d-label d3">D-3</div>
-                  <div className="d-label d4" onClick={() => setCurrentScene('yu')}>D-4</div>
+                <div className="flat-grid-wrapper">
+                  <div className="grid-item">A-1</div>
+                  <div className="grid-item">B-1</div>
+                  <div className="grid-item">C-1</div>
+                  <div className="grid-item">D-1</div>
+
+                  <div className="grid-item">A-2</div>
+                  <div className="grid-item">B-2</div>
+                  <div className="grid-item">C-2</div>
+                  <div className="grid-item">D-2</div>
+
+                  <div className="grid-item">A-3</div>
+                  <div className="grid-item">B-3</div>
+                  <div className="grid-item">C-3</div>
+                  <div className="grid-item">D-3</div>
+
+                  <div className="grid-item">A-4</div>
+                  <div className="grid-item">B-4</div>
+                  <div className="grid-item">C-4</div>
+                  <div className="grid-item clickable" onClick={() => setCurrentScene('yu')}>D-4</div>
                 </div>
               )}
 
@@ -255,18 +270,38 @@ export default function MemorialApp() {
         
         .flat-scene-wrapper { position: absolute; inset: 0; width: 100vw; height: 100vh; background: #111; z-index: 105; display: block; }
         .flat-scene-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 106; }
-        
         .img-error-msg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: #ff5555; border: 2px solid #ff5555; padding: 25px; border-radius: 12px; font-size: 1.2rem; text-align: center; z-index: 120; line-height: 1.6; }
         
-        /* 참고 사진(Enscape)에 맞춘 깔끔한 세로 정렬 */
-        .flat-labels-container { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 115; pointer-events: none; }
-        .d-label { position: absolute; color: #ef4444; font-weight: 900; font-size: 3.2rem; text-shadow: 2px 2px 0px #fff, -2px -2px 0px #fff, 2px -2px 0px #fff, -2px 2px 0px #fff; font-family: 'Arial', sans-serif; pointer-events: none; }
-        .d1 { top: 15%; left: 35%; }
-        .d2 { top: 25%; left: 35%; }
-        .d3 { top: 35%; left: 35%; }
-        .d4 { top: 45%; left: 35%; pointer-events: auto; cursor: pointer; transition: transform 0.2s; }
-        .d4:hover { transform: scale(1.1); color: #dc2626; }
+        /* A-1 ~ D-4 표(Grid) 레이아웃 설정 */
+        .flat-grid-wrapper { 
+          position: absolute; 
+          top: 25%; 
+          left: 10%; 
+          display: grid; 
+          grid-template-columns: repeat(4, auto); 
+          gap: 4vh 4vw; 
+          z-index: 115; 
+        }
+        .grid-item { 
+          color: #ef4444; 
+          font-weight: 900; 
+          font-size: 3.2rem; 
+          text-shadow: 2px 2px 0px #fff, -2px -2px 0px #fff, 2px -2px 0px #fff, -2px 2px 0px #fff; 
+          font-family: 'Arial', sans-serif; 
+          pointer-events: none; 
+          text-align: center;
+        }
+        .grid-item.clickable { 
+          pointer-events: auto; 
+          cursor: pointer; 
+          transition: transform 0.2s; 
+        }
+        .grid-item.clickable:hover { 
+          transform: scale(1.1); 
+          color: #dc2626; 
+        }
         
+        /* yu.jpg 유골함 클릭 상자 */
         .yu-clickbox { position: absolute; top: 15%; left: 10%; width: 12%; height: 15%; cursor: pointer; z-index: 115; pointer-events: auto; border: 2px dashed rgba(255,255,255,0.3); transition: border 0.3s; }
         .yu-clickbox:hover { border: 2px dashed rgba(255,255,255,0.9); }
         .yu-tooltip { position: absolute; top: -35px; left: 0; background: #ef4444; color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.9rem; white-space: nowrap; font-weight: bold; }
