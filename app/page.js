@@ -233,10 +233,9 @@ export default function MemorialApp() {
                 </div>
               )}
 
+              {/* yu.jpg 투명 클릭 영역 (툴팁 제거됨) */}
               {currentScene === 'yu' && !imgError && (
-                <div className="yu-clickbox" onClick={() => setCurrentScene('per')}>
-                  <span className="yu-tooltip">D-4-0001 김민성</span>
-                </div>
+                <div className="yu-clickbox" onClick={() => setCurrentScene('per')}></div>
               )}
             </div>
           )}
@@ -301,10 +300,18 @@ export default function MemorialApp() {
           color: #dc2626; 
         }
         
-        /* yu.jpg 유골함 클릭 상자 */
-        .yu-clickbox { position: absolute; top: 15%; left: 10%; width: 12%; height: 15%; cursor: pointer; z-index: 115; pointer-events: auto; border: 2px dashed rgba(255,255,255,0.3); transition: border 0.3s; }
-        .yu-clickbox:hover { border: 2px dashed rgba(255,255,255,0.9); }
-        .yu-tooltip { position: absolute; top: -35px; left: 0; background: #ef4444; color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.9rem; white-space: nowrap; font-weight: bold; }
+        /* yu.jpg 유골함 투명 클릭 상자 (점선, 툴팁 제거됨) */
+        .yu-clickbox { 
+          position: absolute; 
+          top: 8%;   /* 상단 위치 조정 */
+          left: 9%;  /* 좌측 위치 조정 */
+          width: 14%; /* 너비 조정 (글자+유골함 커버) */
+          height: 30%; /* 높이 조정 (글자+유골함 커버) */
+          cursor: pointer; 
+          z-index: 115; 
+          pointer-events: auto; 
+          background: transparent; /* 완전 투명 */
+        }
         
         .scene-title-badge { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); border: 2px solid #ef4444; color: white; padding: 10px 30px; border-radius: 8px; font-weight: bold; z-index: 130; }
         .exit-button { position: absolute; top: 30px; right: 30px; z-index: 130; background: rgba(0,0,0,0.5); border: 1px solid #fff; border-radius: 50%; width: 50px; height: 50px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
