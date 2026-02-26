@@ -112,26 +112,33 @@ export default function MemorialApp() {
   };
 
   useEffect(() => {
-    if (activeMenu === 'gallery' && isPannellumLoaded && window.pannellum && !SCENE_CONFIG[currentScene]?.isFlat) {
-      if (pannellumInstance.current) { pannellumInstance.current.destroy(); }
+    // 씬 전환 시 기존 뷰어 파괴
+    if (pannellumInstance.current) {
+      pannellumInstance.current.destroy();
+      pannellumInstance.current = null;
+    }
+
+    if (activeMenu === 'gallery' && isPannellumLoaded && window.pannellum) {
       const data = SCENE_CONFIG[currentScene];
-      pannellumInstance.current = window.pannellum.viewer(viewerRef.current, {
-        type: "equirectangular", panorama: data.img,
-        pitch: initView.pitch, yaw: initView.yaw,
-        hfov: 120, maxHfov: 120, minHfov: 50,
-        autoLoad: true, showControls: false,
-        hotSpots: (data.hotspots || []).map(hs => ({
-          pitch: hs.pitch, yaw: hs.yaw,
-          cssClass: "custom-hotspot",
-          createTooltipFunc: (div) => {
-            if (hs.type === 'nav') { 
-              const width = hs.w || 55; const height = hs.h || 85;
-              div.innerHTML = `<div class="road-arrow-3d" style="width:${width}px; height:${height}px; background-color:${hs.color}; transform: translate(-50%, -50%) rotateX(65deg) rotate(${hs.rotate || '0deg'});"></div>`; 
-            } else { div.innerHTML = `<div class="room-tag-red">${hs.text}</div>`; }
-          },
-          clickHandlerFunc: () => handleHotspotClick(hs)
-        }))
-      });
+      if (!data?.isFlat) {
+        pannellumInstance.current = window.pannellum.viewer(viewerRef.current, {
+          type: "equirectangular", panorama: data.img,
+          pitch: initView.pitch, yaw: initView.yaw,
+          hfov: 120, maxHfov: 120, minHfov: 50,
+          autoLoad: true, showControls: false,
+          hotSpots: (data.hotspots || []).map(hs => ({
+            pitch: hs.pitch, yaw: hs.yaw,
+            cssClass: "custom-hotspot",
+            createTooltipFunc: (div) => {
+              if (hs.type === 'nav') { 
+                const width = hs.w || 55; const height = hs.h || 85;
+                div.innerHTML = `<div class="road-arrow-3d" style="width:${width}px; height:${height}px; background-color:${hs.color}; transform: translate(-50%, -50%) rotateX(65deg) rotate(${hs.rotate || '0deg'});"></div>`; 
+              } else { div.innerHTML = `<div class="room-tag-red">${hs.text}</div>`; }
+            },
+            clickHandlerFunc: () => handleHotspotClick(hs)
+          }))
+        });
+      }
     }
   }, [activeMenu, currentScene, isPannellumLoaded, initView]);
 
