@@ -160,8 +160,6 @@ export default function MemorialApp() {
       const data = SCENE_CONFIG[currentScene];
       
       if (!data?.isFlat && viewerRef.current) {
-        
-        // [수정] 모바일 화면(768px 이하)일 때 시야각(hfov)을 50으로 설정하여 최대 확대 적용
         const isMobile = window.innerWidth <= 768;
         const startHfov = isMobile ? 50 : 120;
 
@@ -352,9 +350,49 @@ export default function MemorialApp() {
         .exit-button { position: absolute; top: 10px; right: 30px; z-index: 130; background: rgba(0,0,0,0.5); border: 1px solid #fff; border-radius: 50%; width: 50px; height: 50px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .room-tag-red { background: rgba(0,0,0,0.8); border: 2.5px solid #ef4444; color: white; padding: 7px 18px; border-radius: 8px; font-weight: bold; white-space: nowrap; cursor: pointer; }
         .road-arrow-3d { clip-path: polygon(50% 0%, 15% 100%, 50% 80%, 85% 100%); cursor: pointer; }
-        .toast-center { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.85); color: white; padding: 22px 45px; border-radius: 20px; z-index: 500; text-align: center; }
-        .flower-anim { position: absolute; left: 50%; bottom: 25%; transform: translateX(-50%); z-index: 20; animation: flower-up 2.6s forwards; }
-        @keyframes flower-up { 0% { bottom: 25%; opacity: 0; } 20% { opacity: 1; } 100% { bottom: 60%; opacity: 0; } }
+        
+        /* -------------------------------------------------------------------------- */
+        /* 기본 (데스크탑 PC) 전용 스타일 - 화면 상단(25%~60%)으로 크게 올라가게 유지 */
+        /* -------------------------------------------------------------------------- */
+        .toast-center { 
+          position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+          background: rgba(0,0,0,0.85); color: white; padding: 22px 45px; 
+          border-radius: 20px; z-index: 500; text-align: center; 
+        }
+        .flower-anim { 
+          position: absolute; left: 50%; bottom: 25%; transform: translateX(-50%); 
+          z-index: 20; animation: flower-up-desktop 2.6s forwards; 
+        }
+        .flower-anim img { width: auto; max-width: 150px; }
+        
+        @keyframes flower-up-desktop { 
+          0% { bottom: 25%; opacity: 0; } 
+          20% { opacity: 1; } 
+          100% { bottom: 60%; opacity: 0; } 
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* 모바일 (스마트폰) 전용 스타일 - 768px 이하일 때 덮어쓰기 */
+        /* -------------------------------------------------------------------------- */
+        @media (max-width: 768px) {
+          .toast-center {
+            padding: 18px 30px;
+            white-space: nowrap; /* 줄바꿈 절대 방지 (2줄 유지) */
+            font-size: 0.95rem;
+            line-height: 1.5;
+          }
+          .flower-anim {
+            bottom: 10%;
+            animation: flower-up-mobile 2.6s forwards;
+          }
+          .flower-anim img { width: 120px; }
+        }
+        
+        @keyframes flower-up-mobile {
+          0% { bottom: 10%; opacity: 0; } 
+          20% { opacity: 1; } 
+          100% { bottom: 45%; opacity: 0; } 
+        }
       `}</style>
     </div>
   );
