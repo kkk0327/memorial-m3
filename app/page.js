@@ -208,7 +208,6 @@ export default function MemorialApp() {
                 </div>
               )}
 
-              {/* A-1 ~ D-4 표(Grid) 형태 정렬 */}
               {currentScene === 'bong1234' && !imgError && (
                 <div className="flat-grid-wrapper">
                   <div className="grid-item">A-1</div>
@@ -233,7 +232,6 @@ export default function MemorialApp() {
                 </div>
               )}
 
-              {/* yu.jpg 투명 클릭 영역 (김민성 위치 유지) */}
               {currentScene === 'yu' && !imgError && (
                 <div className="yu-clickbox" onClick={() => setCurrentScene('per')}></div>
               )}
@@ -244,7 +242,11 @@ export default function MemorialApp() {
             <div ref={viewerRef} className="viewer-canvas" />
           )}
 
-          <div className="scene-title-badge">{SCENE_CONFIG[currentScene]?.title}</div>
+          {/* 제목이 있는 씬(Scene)에서만 제목 배지를 렌더링하도록 조건 추가 */}
+          {SCENE_CONFIG[currentScene]?.title && (
+            <div className="scene-title-badge">{SCENE_CONFIG[currentScene].title}</div>
+          )}
+
           <button className="exit-button" onClick={handleExit}><X size={32} /></button>
         </div>
       )}
@@ -264,10 +266,7 @@ export default function MemorialApp() {
         .video-full-viewport { position: fixed; inset: 0; background: #000; z-index: 150; }
         .full-video-element { width: 100%; height: 100%; object-fit: cover; }
         .video-exit-button { position: absolute; top: 30px; right: 30px; background: rgba(0,0,0,0.5); border: 1px solid white; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        
-        /* 오타 수정 부분: inset: 100 -> inset: 0 으로 꽉 채움 복구 */
         .gallery-full-viewport { position: fixed; inset: 0; z-index: 100; background: #000; }
-        
         .viewer-canvas { width: 100%; height: 100%; background: #000; }
         
         .flat-scene-wrapper { position: absolute; inset: 0; width: 100vw; height: 100vh; background: #111; z-index: 105; display: block; }
@@ -302,7 +301,6 @@ export default function MemorialApp() {
           color: #dc2626; 
         }
         
-        /* yu.jpg 유골함 투명 클릭 상자 */
         .yu-clickbox { 
           position: absolute; 
           top: 6%;      
