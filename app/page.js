@@ -233,7 +233,7 @@ export default function MemorialApp() {
                 </div>
               )}
 
-              {/* yu.jpg 투명 클릭 영역 (좌표 수정됨) */}
+              {/* yu.jpg 투명 클릭 영역 (김민성 위치 유지) */}
               {currentScene === 'yu' && !imgError && (
                 <div className="yu-clickbox" onClick={() => setCurrentScene('per')}></div>
               )}
@@ -264,7 +264,10 @@ export default function MemorialApp() {
         .video-full-viewport { position: fixed; inset: 0; background: #000; z-index: 150; }
         .full-video-element { width: 100%; height: 100%; object-fit: cover; }
         .video-exit-button { position: absolute; top: 30px; right: 30px; background: rgba(0,0,0,0.5); border: 1px solid white; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .gallery-full-viewport { position: fixed; inset: 100; z-index: 100; background: #000; }
+        
+        /* 오타 수정 부분: inset: 100 -> inset: 0 으로 꽉 채움 복구 */
+        .gallery-full-viewport { position: fixed; inset: 0; z-index: 100; background: #000; }
+        
         .viewer-canvas { width: 100%; height: 100%; background: #000; }
         
         .flat-scene-wrapper { position: absolute; inset: 0; width: 100vw; height: 100vh; background: #111; z-index: 105; display: block; }
@@ -299,13 +302,13 @@ export default function MemorialApp() {
           color: #dc2626; 
         }
         
-        /* yu.jpg 투명 클릭 상자 (김민성 위치로 조정됨) */
+        /* yu.jpg 유골함 투명 클릭 상자 */
         .yu-clickbox { 
           position: absolute; 
-          top: 6%;      /* 상단 위치 미세 조정 */
-          left: 4%;     /* 왼쪽으로 이동 (김민성 위치) */
-          width: 9%;    /* 너비를 줄여서 옆의 박옥주 침범 방지 */
-          height: 28%;  /* 높이 미세 조정 */
+          top: 6%;      
+          left: 4%;     
+          width: 9%;    
+          height: 28%;  
           cursor: pointer; 
           z-index: 115; 
           pointer-events: auto; 
