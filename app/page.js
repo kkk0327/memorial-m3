@@ -14,7 +14,8 @@ const SCENE_CONFIG = {
       { type: 'room', target: 'office', text: '오피스', pitch: 4, yaw: 32 },
       { type: 'room', target: 'dis', text: '전시관', pitch: 3, yaw: 55 },
       { type: 'room', target: 'jip', text: '집회장', pitch: -8, yaw: 45 },
-      { type: 'nav', target: 'Panorama02', color: '#ef4444', pitch: -22, yaw: -18, targetYaw: 0 }
+      // 빨간색 화살표 위치를 왼쪽(yaw: -26)으로 이동
+      { type: 'nav', target: 'Panorama02', color: '#ef4444', pitch: -22, yaw: -26, targetYaw: 0 }
     ]
   },
   'Panorama02': { 
@@ -71,7 +72,8 @@ export default function MemorialApp() {
   const [activeMenu, setActiveMenu] = useState('main'); 
   const [currentScene, setCurrentScene] = useState('Panorama01');
   const [lastOutdoorScene, setLastOutdoorScene] = useState('Panorama01');
-  const [initView, setInitView] = useState({ pitch: 0, yaw: 0 });
+  // 초기 뷰를 다리 중앙(yaw: -26)을 바라보게 변경
+  const [initView, setInitView] = useState({ pitch: 0, yaw: -26 });
   const [isPannellumLoaded, setIsPannellumLoaded] = useState(false);
   const [hasFlowered, setHasFlowered] = useState(false);
   const [isFlowering, setIsFlowering] = useState(false);
@@ -85,7 +87,8 @@ export default function MemorialApp() {
 
   const startGallery = () => {
     setCurrentScene('Panorama01');
-    setInitView({ pitch: 0, yaw: 0 });
+    // 영상이 끝나고 갤러리 진입 시에도 다리 중앙(yaw: -26)을 보도록 변경
+    setInitView({ pitch: 0, yaw: -26 });
     setActiveMenu('gallery');
   };
 
@@ -242,7 +245,6 @@ export default function MemorialApp() {
             <div ref={viewerRef} className="viewer-canvas" />
           )}
 
-          {/* 제목이 있는 씬(Scene)에서만 제목 배지를 렌더링하도록 조건 추가 */}
           {SCENE_CONFIG[currentScene]?.title && (
             <div className="scene-title-badge">{SCENE_CONFIG[currentScene].title}</div>
           )}
