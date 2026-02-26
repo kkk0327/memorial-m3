@@ -233,7 +233,7 @@ export default function MemorialApp() {
                 </div>
               )}
 
-              {/* yu.jpg 투명 클릭 영역 (툴팁 제거됨) */}
+              {/* yu.jpg 투명 클릭 영역 (좌표 수정됨) */}
               {currentScene === 'yu' && !imgError && (
                 <div className="yu-clickbox" onClick={() => setCurrentScene('per')}></div>
               )}
@@ -264,14 +264,13 @@ export default function MemorialApp() {
         .video-full-viewport { position: fixed; inset: 0; background: #000; z-index: 150; }
         .full-video-element { width: 100%; height: 100%; object-fit: cover; }
         .video-exit-button { position: absolute; top: 30px; right: 30px; background: rgba(0,0,0,0.5); border: 1px solid white; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .gallery-full-viewport { position: fixed; inset: 0; z-index: 100; background: #000; }
+        .gallery-full-viewport { position: fixed; inset: 100; z-index: 100; background: #000; }
         .viewer-canvas { width: 100%; height: 100%; background: #000; }
         
         .flat-scene-wrapper { position: absolute; inset: 0; width: 100vw; height: 100vh; background: #111; z-index: 105; display: block; }
         .flat-scene-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 106; }
         .img-error-msg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: #ff5555; border: 2px solid #ff5555; padding: 25px; border-radius: 12px; font-size: 1.2rem; text-align: center; z-index: 120; line-height: 1.6; }
         
-        /* A-1 ~ D-4 표(Grid) 레이아웃 설정 */
         .flat-grid-wrapper { 
           position: absolute; 
           top: 25%; 
@@ -300,17 +299,17 @@ export default function MemorialApp() {
           color: #dc2626; 
         }
         
-        /* yu.jpg 유골함 투명 클릭 상자 (점선, 툴팁 제거됨) */
+        /* yu.jpg 투명 클릭 상자 (김민성 위치로 조정됨) */
         .yu-clickbox { 
           position: absolute; 
-          top: 8%;   /* 상단 위치 조정 */
-          left: 9%;  /* 좌측 위치 조정 */
-          width: 14%; /* 너비 조정 (글자+유골함 커버) */
-          height: 30%; /* 높이 조정 (글자+유골함 커버) */
+          top: 6%;      /* 상단 위치 미세 조정 */
+          left: 4%;     /* 왼쪽으로 이동 (김민성 위치) */
+          width: 9%;    /* 너비를 줄여서 옆의 박옥주 침범 방지 */
+          height: 28%;  /* 높이 미세 조정 */
           cursor: pointer; 
           z-index: 115; 
           pointer-events: auto; 
-          background: transparent; /* 완전 투명 */
+          background: transparent; 
         }
         
         .scene-title-badge { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); border: 2px solid #ef4444; color: white; padding: 10px 30px; border-radius: 8px; font-weight: bold; z-index: 130; }
